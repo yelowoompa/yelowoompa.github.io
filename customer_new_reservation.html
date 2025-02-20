@@ -83,10 +83,7 @@
     </div>
 
     <script>
-        const existingReservations = JSON.parse(localStorage.getItem('reservations')) || [
-            { name: "John Doe", email: "john.doe@example.com", date: "2025-02-10", time: "18:30" },
-            { name: "Jane Smith", email: "jane.smith@example.com", date: "2025-02-15", time: "20:00" }
-        ];
+        let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
 
         function validateNewReservation(event) {
             event.preventDefault();
@@ -126,6 +123,7 @@
         }
 
         function loadExistingReservations() {
+            document.getElementById('reservationList').innerHTML = '';
             existingReservations.forEach(addReservationToList);
         }
 
