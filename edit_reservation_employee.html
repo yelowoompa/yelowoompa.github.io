@@ -37,6 +37,18 @@
             display: none;
             margin-top: 20px;
         }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +58,9 @@
 
         <div class="edit-form" id="editForm">
             <h3>Edit Reservation</h3>
+            <label for="editUsername">Username</label>
+            <input type="text" id="editUsername" disabled>
+
             <label for="editName">Name</label>
             <input type="text" id="editName">
 
@@ -62,6 +77,7 @@
             <input type="number" id="editGuests" min="1">
 
             <button onclick="saveChanges()">Save Changes</button>
+            <button onclick="cancelEdit()">Cancel</button>
         </div>
     </div>
 
@@ -77,14 +93,15 @@
                 const div = document.createElement('div');
                 div.classList.add('reservation-item');
                 div.innerHTML = `
+                    <p><strong>Username:</strong> ${reservation.username}</p>
                     <p><strong>Name:</strong> ${reservation.name}</p>
                     <p><strong>Email:</strong> ${reservation.email}</p>
                     <p><strong>Date:</strong> ${reservation.date}</p>
                     <p><strong>Time:</strong> ${reservation.time}</p>
                     <p><strong>Guests:</strong> ${reservation.guests}</p>
+                    <button onclick="editReservation(${index})">Edit</button>
                     <button onclick="deleteReservation(${index})">Delete</button>
                 `;
-                div.onclick = () => editReservation(index);
                 reservationList.appendChild(div);
             });
         }
@@ -93,6 +110,7 @@
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             const reservation = reservations[index];
 
+            document.getElementById('editUsername').value = reservation.username;
             document.getElementById('editName').value = reservation.name;
             document.getElementById('editEmail').value = reservation.email;
             document.getElementById('editDate').value = reservation.date;
@@ -106,7 +124,10 @@
         function saveChanges() {
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
 
+            if (currentEditIndex === null) return;
+
             reservations[currentEditIndex] = {
+                username: document.getElementById('editUsername').value,
                 name: document.getElementById('editName').value,
                 email: document.getElementById('editEmail').value,
                 date: document.getElementById('editDate').value,
@@ -124,6 +145,10 @@
             reservations.splice(index, 1);
             localStorage.setItem('reservations', JSON.stringify(reservations));
             loadReservations();
+        }
+
+        function cancelEdit() {
+            document.getElementById('editForm').style.display = 'none';
         }
 
         window.onload = loadReservations;
