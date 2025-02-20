@@ -75,53 +75,18 @@
     </div>
 
     <script>
-        function validateLogin() {
-            const username = document.getElementById("loginUsername").value;
-            const password = document.getElementById("loginPassword").value;
+    function validateLogin() {
+        const username = document.getElementById("loginUsername").value;
+        const password = document.getElementById("loginPassword").value;
+        const storedUsers = JSON.parse(localStorage.getItem("users")) || {};
 
-            const storedUsers = JSON.parse(localStorage.getItem("users")) || {};
-          
-            if ((username === "maryB" && password === "password") || 
-                (username === "chadP" && password === "secure") || 
-                (storedUsers[username] && storedUsers[username] === password)) {
-                window.location.href = "customerportal.html";
-            } else {
-                alert("Invalid username or password");
-            }
+        if (storedUsers[username] && storedUsers[username] === password) {
+            localStorage.setItem("loggedInUser", username); // Store logged-in user
+            window.location.href = "customer_new_reservation.html";
+        } else {
+            alert("Invalid username or password");
         }
-
-        function createUser() {
-            const newUsername = document.getElementById("signupUsername").value;
-            const newPassword = document.getElementById("signupPassword").value;
-
-            if (!newUsername || !newPassword) {
-                alert("Please enter a username and password.");
-                return;
-            }
-
-            let users = JSON.parse(localStorage.getItem("users")) || {};
-            
-            if (users[newUsername]) {
-                alert("Username already exists.");
-                return;
-            }
-
-            users[newUsername] = newPassword;
-            localStorage.setItem("users", JSON.stringify(users));
-            alert("User created successfully! You can now log in.");
-
-            showLogin();
-        }
-
-        function showSignup() {
-            document.getElementById("loginContainer").classList.add("hidden");
-            document.getElementById("signupContainer").classList.remove("hidden");
-        }
-
-        function showLogin() {
-            document.getElementById("signupContainer").classList.add("hidden");
-            document.getElementById("loginContainer").classList.remove("hidden");
-        }
-    </script>
+    }
+	script>
 </body>
 </html>

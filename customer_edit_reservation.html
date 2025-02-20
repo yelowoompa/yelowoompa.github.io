@@ -38,26 +38,35 @@
     </div>
 
     <script>
-        function loadReservations() {
-            const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
-            const reservationList = document.getElementById('reservationList');
-            reservationList.innerHTML = '';
+    function loadReservations() {
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        const reservationList = document.getElementById('reservationList');
+        reservationList.innerHTML = '';
+        const loggedInUser = localStorage.getItem('loggedInUser');
 
-            reservations.forEach(reservation => {
-                const div = document.createElement('div');
-                div.classList.add('reservation-item');
-                div.innerHTML = `
-                    <p><strong>Name:</strong> ${reservation.name}</p>
-                    <p><strong>Email:</strong> ${reservation.email}</p>
-                    <p><strong>Date:</strong> ${reservation.date}</p>
-                    <p><strong>Time:</strong> ${reservation.time}</p>
-                    <p><strong>Guests:</strong> ${reservation.guests}</p>
-                `;
-                reservationList.appendChild(div);
-            });
+        if (!loggedInUser) {
+            alert("Please log in to manage your reservations.");
+            window.location.href = "customerlogin.html";
+            return;
         }
 
-        window.onload = loadReservations;
-    </script>
+        reservations.forEach(reservation => {
+            if (reservation.username !== loggedInUser) return; // Ensure only user’s reservations are displayed
+
+            const div = document.createElement('div');
+            div.classList.add('reservation-item');
+            div.innerHTML = `
+                <p><strong>Name:</strong> ${reservation.name}</p>
+                <p><strong>Email:</strong> ${reservation.email}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Time:</strong> ${reservation.time}</p>
+                <p><strong>Guests:</strong> ${reservation.guests}</p>
+            `;
+            reservationList.appendChild(div);
+        });
+    }
+
+    window.onload = loadReservations;
+	</script>
 </body>
 </html>
