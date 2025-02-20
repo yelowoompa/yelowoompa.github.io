@@ -82,7 +82,7 @@
 
         if (storedUsers[username] && storedUsers[username] === password) {
             localStorage.setItem("loggedInUser", username); // Store logged-in user
-            window.location.href = "customer_new_reservation.html";
+            window.location.href = "customerportal.html";
         } else {
             alert("Invalid username or password");
         }
