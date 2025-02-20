@@ -60,10 +60,7 @@
     <div class="container">
         <h2>New Reservation</h2>
         <form id="reservationForm" onsubmit="return validateNewReservation(event)">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
-			
-			<label for="name">Full Name</label>
+            <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
             
             <label for="email">Email</label>
@@ -80,66 +77,64 @@
             
             <button type="submit">Reserve Now</button>
         </form>
-        <h2>Existing Reservations</h2>
-        <div class="reservation-list" id="reservationList">
-        </div>
+        <h2>My Reservations</h2>
+        <div class="reservation-list" id="reservationList"></div>
     </div>
 
     <script>
-    let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
-    let loggedInUser = localStorage.getItem('loggedInUser');
+        let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        let loggedInUser = localStorage.getItem('loggedInUser');
 
-    function validateNewReservation(event) {
-        event.preventDefault();
-        const username = loggedInUser; // Ensure username is stored
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const date = document.getElementById('date').value;
-        const time = document.getElementById('time').value;
-        const guests = document.getElementById('guests').value;
+        function validateNewReservation(event) {
+            event.preventDefault();
+            if (!loggedInUser) {
+                alert("You must be logged in to create a reservation.");
+                return false;
+            }
 
-        if (!username) {
-            alert("You must be logged in to create a reservation.");
-            return false;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const guests = document.getElementById('guests').value;
+
+            const newReservation = { username: loggedInUser, name, email, date, time, guests };
+            existingReservations.push(newReservation);
+            localStorage.setItem('reservations', JSON.stringify(existingReservations));
+            loadExistingReservations();
+            alert('Reservation successfully created!');
+            return true;
         }
 
-        const newReservation = { username, name, email, date, time, guests };
-        existingReservations.push(newReservation);
-        localStorage.setItem('reservations', JSON.stringify(existingReservations));
-        loadExistingReservations();
-        alert('Reservation successfully created!');
-        return true;
-    }
+        function addReservationToList(reservation) {
+            if (reservation.username !== loggedInUser) return;
 
-    function addReservationToList(reservation) {
-        if (reservation.username !== loggedInUser) return; // Ensure only logged-in user's reservations are displayed
-
-        const reservationList = document.getElementById('reservationList');
-        const div = document.createElement('div');
-        div.classList.add('reservation-item');
-        div.innerHTML = `
-            <p><strong>Name:</strong> ${reservation.name}</p>
-            <p><strong>Email:</strong> ${reservation.email}</p>
-            <p><strong>Date:</strong> ${reservation.date}</p>
-            <p><strong>Time:</strong> ${reservation.time}</p>
-            <p><strong>Guests:</strong> ${reservation.guests}</p>
-        `;
-        reservationList.appendChild(div);
-    }
-
-    function loadExistingReservations() {
-        document.getElementById('reservationList').innerHTML = '';
-        existingReservations.forEach(addReservationToList);
-    }
-
-    window.onload = function() {
-        loggedInUser = localStorage.getItem('loggedInUser'); // Get logged-in user
-        if (!loggedInUser) {
-            alert("Please log in to view your reservations.");
-            window.location.href = "customerlogin.html"; // Redirect if not logged in
+            const reservationList = document.getElementById('reservationList');
+            const div = document.createElement('div');
+            div.classList.add('reservation-item');
+            div.innerHTML = `
+                <p><strong>Name:</strong> ${reservation.name}</p>
+                <p><strong>Email:</strong> ${reservation.email}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Time:</strong> ${reservation.time}</p>
+                <p><strong>Guests:</strong> ${reservation.guests}</p>
+            `;
+            reservationList.appendChild(div);
         }
-        loadExistingReservations();
-    };
-	</script>
+
+        function loadExistingReservations() {
+            document.getElementById('reservationList').innerHTML = '';
+            existingReservations.forEach(addReservationToList);
+        }
+
+        window.onload = function() {
+            loggedInUser = localStorage.getItem('loggedInUser');
+            if (!loggedInUser) {
+                alert("Please log in to view your reservations.");
+                window.location.href = "customerlogin.html";
+            }
+            loadExistingReservations();
+        };
+    </script>
 </body>
 </html>

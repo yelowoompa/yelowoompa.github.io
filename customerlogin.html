@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Login</title>
+    <title>Customer Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,17 +17,11 @@
             height: 100vh;
             background-color: #f4f4f4;
         }
-        header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .login-container, .signup-container {
+        .login-container {
             background: white;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            text-align: center;
             width: 300px;
         }
         input {
@@ -50,43 +44,29 @@
         button:hover {
             background-color: #0056b3;
         }
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <header>Customer Login</header>
-    
-    <div class="login-container" id="loginContainer">
+    <div class="login-container">
         <h2>Login</h2>
         <input type="text" id="loginUsername" placeholder="Username" required>
         <input type="password" id="loginPassword" placeholder="Password" required>
         <button onclick="validateLogin()">Login</button>
-        <button onclick="showSignup()">Create New User</button>
-    </div>
-
-    <div class="signup-container hidden" id="signupContainer">
-        <h2>Create New User</h2>
-        <input type="text" id="signupUsername" placeholder="New Username" required>
-        <input type="password" id="signupPassword" placeholder="New Password" required>
-        <button onclick="createUser()">Sign Up</button>
-        <button onclick="showLogin()">Back to Login</button>
     </div>
 
     <script>
-    function validateLogin() {
-        const username = document.getElementById("loginUsername").value;
-        const password = document.getElementById("loginPassword").value;
-        const storedUsers = JSON.parse(localStorage.getItem("users")) || {};
+        function validateLogin() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+            const storedUsers = JSON.parse(localStorage.getItem("users")) || {};
 
-        if (storedUsers[username] && storedUsers[username] === password) {
-            localStorage.setItem("loggedInUser", username); // Store logged-in user
-            window.location.href = "customerportal.html";
-        } else {
-            alert("Invalid username or password");
+            if (storedUsers[username] && storedUsers[username] === password) {
+                localStorage.setItem("loggedInUser", username);
+                window.location.href = "customer_new_reservation.html";
+            } else {
+                alert("Invalid username or password");
+            }
         }
-    }
-	script>
+    </script>
 </body>
 </html>
