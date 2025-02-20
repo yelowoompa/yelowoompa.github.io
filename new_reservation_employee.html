@@ -62,75 +62,72 @@
         <form id="reservationForm" onsubmit="return validateNewReservation(event)">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
-			
-			<label for="name">Full Name</label>
+
+            <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
-            
+
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
-            
+
             <label for="date">Date</label>
             <input type="date" id="date" name="date" required>
-            
+
             <label for="time">Time</label>
             <input type="time" id="time" name="time" required>
-            
+
             <label for="guests">Number of Guests</label>
             <input type="number" id="guests" name="guests" min="1" required>
-            
+
             <button type="submit">Reserve Now</button>
         </form>
         <h2>Existing Reservations</h2>
-        <div class="reservation-list" id="reservationList">
-        </div>
+        <div class="reservation-list" id="reservationList"></div>
     </div>
 
     <script>
-        const existingReservations = JSON.parse(localStorage.getItem('reservations')) || [
-            { name: "John Doe", email: "john.doe@example.com", date: "2025-02-10", time: "18:30" },
-            { name: "Jane Smith", email: "jane.smith@example.com", date: "2025-02-15", time: "20:00" }
-        ];
-
         function validateNewReservation(event) {
             event.preventDefault();
+            const username = document.getElementById('username').value.trim();
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
             const guests = document.getElementById('guests').value;
 
-            for (let res of existingReservations) {
-                if (res.name === name && res.email === email && res.date === date && res.time === time) {
-                    alert('This reservation already exists. Please choose a different time or date.');
-                    return false;
-                }
+            if (!username) {
+                alert('Please enter a username.');
+                return false;
             }
-            
-            const newReservation = { name, email, date, time, guests };
+
+            let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+            const newReservation = { username, name, email, date, time, guests };
             existingReservations.push(newReservation);
             localStorage.setItem('reservations', JSON.stringify(existingReservations));
-            addReservationToList(newReservation);
+
+            loadExistingReservations();
             alert('Reservation successfully created!');
             return true;
         }
 
-        function addReservationToList(reservation) {
-            const reservationList = document.getElementById('reservationList');
-            const div = document.createElement('div');
-            div.classList.add('reservation-item');
-            div.innerHTML = `
-				<p><strong>Username:</strong> ${reservation.username}</p>
-                <p><strong>Name:</strong> ${reservation.name}</p>
-                <p><strong>Email:</strong> ${reservation.email}</p>
-                <p><strong>Date:</strong> ${reservation.date}</p>
-                <p><strong>Time:</strong> ${reservation.time}</p>
-                <p><strong>Guests:</strong> ${reservation.guests}</p>
-            `;
-            reservationList.appendChild(div);
-        }
-
         function loadExistingReservations() {
-            existingReservations.forEach(addReservationToList);
+            let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            const reservationList = document.getElementById('reservationList');
+            reservationList.innerHTML = '';
+
+            existingReservations.forEach(reservation => {
+                const div = document.createElement('div');
+                div.classList.add('reservation-item');
+                div.innerHTML = `
+                    <p><strong>Username:</strong> ${reservation.username}</p>
+                    <p><strong>Name:</strong> ${reservation.name}</p>
+                    <p><strong>Email:</strong> ${reservation.email}</p>
+                    <p><strong>Date:</strong> ${reservation.date}</p>
+                    <p><strong>Time:</strong> ${reservation.time}</p>
+                    <p><strong>Guests:</strong> ${reservation.guests}</p>
+                `;
+                reservationList.appendChild(div);
+            });
         }
 
         window.onload = loadExistingReservations;
