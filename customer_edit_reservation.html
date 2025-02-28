@@ -54,6 +54,9 @@
 
         <div class="edit-form" id="editForm">
             <h3>Edit Reservation</h3>
+            <label for="editCompany">Name</label>
+            <input type="text" id="editCompany" >
+
             <label for="editName">Name</label>
             <input type="text" id="editName" required>
 
@@ -95,6 +98,7 @@
                 const div = document.createElement('div');
                 div.classList.add('reservation-item');
                 div.innerHTML = `
+                    <p><strong>Company:</strong> ${reservation.company}</p>
                     <p><strong>Name:</strong> ${reservation.name}</p>
                     <p><strong>Email:</strong> ${reservation.email}</p>
                     <p><strong>Date:</strong> ${reservation.date}</p>
@@ -111,6 +115,7 @@
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             const reservation = reservations[index];
 
+            document.getElementById('editCompany').value = reservation.company;
             document.getElementById('editName').value = reservation.name;
             document.getElementById('editEmail').value = reservation.email;
             document.getElementById('editDate').value = reservation.date;
@@ -127,6 +132,7 @@
 
             reservations[currentEditIndex] = {
                 username: loggedInUser,
+                company: document.getElementById('editComapny').value,
                 name: document.getElementById('editName').value,
                 email: document.getElementById('editEmail').value,
                 date: document.getElementById('editDate').value,

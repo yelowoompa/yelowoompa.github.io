@@ -60,6 +60,9 @@
     <div class="container">
         <h2>New Reservation</h2>
         <form id="reservationForm" onsubmit="return validateNewReservation(event)">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" >
+
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
             
@@ -100,6 +103,7 @@
                 return false;
             }
 
+            const company = document.getElementById('company').value;
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const date = document.getElementById('date').value;
@@ -121,6 +125,7 @@
             const div = document.createElement('div');
             div.classList.add('reservation-item');
             div.innerHTML = `
+                <p><strong>Company:</strong> ${reservation.company}</p>
                 <p><strong>Name:</strong> ${reservation.name}</p>
                 <p><strong>Email:</strong> ${reservation.email}</p>
                 <p><strong>Date:</strong> ${reservation.date}</p>

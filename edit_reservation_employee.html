@@ -58,6 +58,9 @@
 
         <div class="edit-form" id="editForm">
             <h3>Edit Reservation</h3>
+            <label for="editCompany">Company</label>
+            <input type="text" id="editCompany">
+
             <label for="editUsername">Username</label>
             <input type="text" id="editUsername" required>
 
@@ -93,6 +96,7 @@
                 const div = document.createElement('div');
                 div.classList.add('reservation-item');
                 div.innerHTML = `
+                    <p><strong>Company:</strong> ${reservation.company}</p>
                     <p><strong>Username:</strong> ${reservation.username || "Not Assigned"}</p>
                     <p><strong>Name:</strong> ${reservation.name}</p>
                     <p><strong>Email:</strong> ${reservation.email}</p>
@@ -111,6 +115,7 @@
             const reservation = reservations[index];
 
             document.getElementById('editUsername').value = reservation.username || "";
+            document.getElementById('editCompany').value = reservation.company;
             document.getElementById('editName').value = reservation.name;
             document.getElementById('editEmail').value = reservation.email;
             document.getElementById('editDate').value = reservation.date;
@@ -127,6 +132,7 @@
 
             reservations[currentEditIndex] = {
                 username: document.getElementById('editUsername').value.trim(),
+                company: document.getElementById('editCompany').value,
                 name: document.getElementById('editName').value,
                 email: document.getElementById('editEmail').value,
                 date: document.getElementById('editDate').value,
