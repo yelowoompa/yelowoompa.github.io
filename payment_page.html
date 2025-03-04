@@ -139,13 +139,20 @@
       return false;
     }
 
-    // Remove the processed reservation
-    reservations = reservations.filter(res => res.email !== currentLargeReservation.email || res.date !== currentLargeReservation.date);
-    localStorage.setItem('reservations', JSON.stringify(reservations));
-    sessionStorage.removeItem('currentLargeReservation');
+    // Find and update the reservation
+    reservations = reservations.map(reservation => {
+      if (reservation.email === currentLargeReservation.email && reservation.date === currentLargeReservation.date) {
+        reservation.paid = true; // ✅ Mark as paid instead of deleting
+      }
+      return reservation;
+    });
 
-    alert("Payment successful! Your reservation is confirmed.");
-    window.location.href = "index.html";
+    // Save updated reservations back to localStorage
+    localStorage.setItem('reservations', JSON.stringify(reservations));
+    sessionStorage.removeItem('currentLargeReservation'); // Clean up session storage
+
+    alert("Payment successful! Your reservation is now marked as paid.");
+    window.location.href = "index.html"; // Redirect back to customer portal
   }
 
   window.onload = loadReservationDetails;
