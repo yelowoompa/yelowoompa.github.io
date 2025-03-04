@@ -82,14 +82,22 @@
 
 <script>
   function loadReservationDetails() {
-    let largeReservations = JSON.parse(localStorage.getItem('largeReservations')) || [];
-    if (largeReservations.length === 0) {
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+    if (reservations.length === 0) {
       alert("No large reservation found.");
       window.location.href = "large_reservation_form.html";
       return;
     }
 
-    let lastReservation = largeReservations[largeReservations.length - 1];
+    // Find the most recent large reservation
+    let lastReservation = reservations.reverse().find(res => res.largeReservation);
+
+    if (!lastReservation) {
+      alert("No large reservation found.");
+      window.location.href = "large_reservation_form.html";
+      return;
+    }
 
     document.getElementById('company').innerText = lastReservation.company;
     document.getElementById('name').innerText = lastReservation.name;
