@@ -143,8 +143,9 @@
         reservations.push(newLargeReservation);
         localStorage.setItem('reservations', JSON.stringify(reservations));
 
+        console.log("Large reservation saved:", newLargeReservation); // Debugging Log
         alert('Large reservation successfully submitted.');
-        window.location.href = 'payment_page.html'; // Redirect to payment
+        window.location.href = 'payment_page.html';
     }
 </script>
 </body>
