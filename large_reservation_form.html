@@ -126,7 +126,18 @@
         }
 
         // Fetch existing reservations or create a new array
-        let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        let reservations = [];
+        if (localStorage.getItem('reservations')) {
+            try {
+                reservations = JSON.parse(localStorage.getItem('reservations'));
+                if (!Array.isArray(reservations)) {
+                    reservations = []; // If it's not an array, reset it
+                }
+            } catch (error) {
+                console.error("Error parsing reservations:", error);
+                reservations = []; // Reset in case of JSON corruption
+            }
+        }
 
         // Create new large reservation object
         const newLargeReservation = {
@@ -139,17 +150,17 @@
             guests,
             roomSize,
             signature,
-            largeReservation: true // ✅ Ensure this flag is set
+            largeReservation: true
         };
 
-        // Debugging: Log reservation before saving
+        // Debugging: Log before saving
         console.log("Saving Large Reservation:", newLargeReservation);
 
         // Push to array and save to localStorage
         reservations.push(newLargeReservation);
         localStorage.setItem('reservations', JSON.stringify(reservations));
 
-        // Debugging: Log reservations after saving
+        // Debugging: Check if it was stored correctly
         console.log("Updated Reservations in localStorage:", JSON.parse(localStorage.getItem('reservations')));
 
         alert('Large reservation successfully submitted.');
