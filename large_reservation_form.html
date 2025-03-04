@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Large Reservation Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .agreement {
+            margin-top: 20px;
+            padding: 10px;
+            background: #ffebcc;
+            border: 1px solid #ff9900;
+            border-radius: 5px;
+        }
+        .signature {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Large Reservation Agreement</h2>
+    <form id="largeReservationForm" onsubmit="return submitLargeReservation(event)">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" required>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time" required>
+
+        <label for="guests">Number of Guests</label>
+        <input type="number" id="guests" name="guests" min="51" required>
+
+        <label for="roomSize">Room Size</label>
+        <select id="roomSize" name="roomSize" required>
+            <option value="Large">Large Room</option>
+            <option value="Extra Large">Extra Large Room</option>
+        </select>
+
+        <div class="agreement">
+            <p><strong>Agreement:</strong> By signing below, you acknowledge that:</p>
+            <ul>
+                <li>All large reservations are final and cannot be canceled.</li>
+                <li>Payment must be made upfront before confirmation.</li>
+            </ul>
+            <label for="signature">Signature</label>
+            <input type="text" id="signature" name="signature" placeholder="Enter your full name as a signature" required>
+        </div>
+
+        <button type="submit">Submit Large Reservation</button>
+    </form>
+</div>
+
+<script>
+    function submitLargeReservation(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const company = document.getElementById('company').value;
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+        const guests = parseInt(document.getElementById('guests').value, 10);
+        const roomSize = document.getElementById('roomSize').value;
+        const signature = document.getElementById('signature').value.trim();
+
+        if (!signature) {
+            alert('You must provide a signature to agree to the terms.');
+            return false;
+        }
+
+        let largeReservations = JSON.parse(localStorage.getItem('largeReservations')) || [];
+
+        const newLargeReservation = { username, company, name, email, date, time, guests, roomSize, signature };
+        largeReservations.push(newLargeReservation);
+        localStorage.setItem('largeReservations', JSON.stringify(largeReservations));
+
+        alert('Large reservation successfully submitted. Payment must be made upfront.');
+        window.location.href = 'payment_page.html'; // Redirect to a payment page (create this separately)
+        return true;
+    }
+</script>
+</body>
+</html>
