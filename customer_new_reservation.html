@@ -54,111 +54,117 @@
             margin-bottom: 10px;
             border-radius: 5px;
         }
-
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>New Reservation</h2>
-        <form id="reservationForm" onsubmit="return validateNewReservation(event)">
-            <label for="company">Company</label>
-            <input type="text" id="company" name="company" >
+<div class="container">
+    <h2>New Reservation</h2>
+    <form id="reservationForm" onsubmit="return validateNewReservation(event)">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" disabled>
 
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="date">Date</label>
-            <input type="date" id="date" name="date" required>
-            
-            <label for="time">Time</label>
-            <input type="time" id="time" name="time" required>
-            
-            <label for="guests">Number of Guests</label>
-	    <input type="number" id="guests" name="guests" min="1" required>
-	    
-	    <label for="roomSize">Room Size</label>
-		<select id="roomSize" name="roomSize" required>
-		    <option value="Small">Small Room</option>
-		    <option value="Medium">Medium Room</option>
-		    <option value="Large">Large Room</option>
-		    <option value="Extra Large">Extra Large Room</option>
-		</select>
-            
-            <button type="submit">Reserve Now</button>
-        </form>
-        <button onclick="location.href='customerportal.html'">Back to customer portal</button>
-        <h2>My Reservations</h2>
-        <div class="reservation-list" id="reservationList"></div>
-    </div>
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company">
 
-    <script>
-        let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
-        let loggedInUser = localStorage.getItem('loggedInUser');
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
 
-        function validateNewReservation(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const company = document.getElementById('company').value;
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
-            const guests = parseInt(document.getElementById('guests').value, 10);
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
 
-            if (!username) {
-                alert('Please enter a username.');
-                return false;
-            }
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required>
 
-            if (guests > 50) {
-                window.location.href = 'large_reservation_form.html';
-                return false;
-            }
+        <label for="time">Time</label>
+        <input type="time" id="time" name="time" required>
 
-            let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        <label for="guests">Number of Guests</label>
+        <input type="number" id="guests" name="guests" min="1" required>
 
-            const newReservation = { username, company, name, email, date, time, guests };
-            existingReservations.push(newReservation);
-            localStorage.setItem('reservations', JSON.stringify(existingReservations));
+        <label for="roomSize">Room Size</label>
+        <select id="roomSize" name="roomSize" required>
+            <option value="Small">Small Room</option>
+            <option value="Medium">Medium Room</option>
+            <option value="Large">Large Room</option>
+            <option value="Extra Large">Extra Large Room</option>
+        </select>
 
-            loadExistingReservations();
-            alert('Reservation successfully created!');
-            return true;
+        <button type="submit">Reserve Now</button>
+    </form>
+    <button onclick="location.href='customerportal.html'">Back to customer portal</button>
+    <h2>My Reservations</h2>
+    <div class="reservation-list" id="reservationList"></div>
+</div>
+
+<script>
+    let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    let loggedInUser = localStorage.getItem('loggedInUser');
+
+    function validateNewReservation(event) {
+        event.preventDefault();
+
+        const username = loggedInUser;
+        const company = document.getElementById('company').value;
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+        const guests = parseInt(document.getElementById('guests').value, 10);
+        const roomSize = document.getElementById('roomSize').value;
+
+        if (!username) {
+            alert('Please log in to make a reservation.');
+            return false;
         }
 
-        function addReservationToList(reservation) {
-            if (reservation.username !== loggedInUser) return;
+        if (guests > 50) {
+            window.location.href = 'large_reservation_form.html';
+            return false;
+        }
 
-            const reservationList = document.getElementById('reservationList');
-            const div = document.createElement('div');
-            div.classList.add('reservation-item');
-            div.innerHTML = `
+        const newReservation = { username, company, name, email, date, time, guests, roomSize };
+        existingReservations.push(newReservation);
+        localStorage.setItem('reservations', JSON.stringify(existingReservations));
+
+        loadExistingReservations();
+        alert('Reservation successfully created!');
+        document.getElementById("reservationForm").reset();
+        return true;
+    }
+
+    function addReservationToList(reservation) {
+        if (reservation.username !== loggedInUser) return;
+
+        const reservationList = document.getElementById('reservationList');
+        const div = document.createElement('div');
+        div.classList.add('reservation-item');
+        div.innerHTML = `
                 <p><strong>Company:</strong> ${reservation.company}</p>
                 <p><strong>Name:</strong> ${reservation.name}</p>
                 <p><strong>Email:</strong> ${reservation.email}</p>
                 <p><strong>Date:</strong> ${reservation.date}</p>
                 <p><strong>Time:</strong> ${reservation.time}</p>
                 <p><strong>Guests:</strong> ${reservation.guests}</p>
+                <p><strong>Room Size:</strong> ${reservation.roomSize}</p>
             `;
-            reservationList.appendChild(div);
-        }
+        reservationList.appendChild(div);
+    }
 
-        function loadExistingReservations() {
-            document.getElementById('reservationList').innerHTML = '';
-            existingReservations.forEach(addReservationToList);
-        }
+    function loadExistingReservations() {
+        document.getElementById('reservationList').innerHTML = '';
+        existingReservations.forEach(addReservationToList);
+    }
 
-        window.onload = function() {
-            loggedInUser = localStorage.getItem('loggedInUser');
-            if (!loggedInUser) {
-                alert("Please log in to view your reservations.");
-                window.location.href = "customerlogin.html";
-            }
-            loadExistingReservations();
-        };
-    </script>
+    window.onload = function() {
+        loggedInUser = localStorage.getItem('loggedInUser');
+        if (!loggedInUser) {
+            alert("Please log in to view your reservations.");
+            window.location.href = "customerlogin.html";
+            return;
+        }
+        document.getElementById('username').value = loggedInUser;
+        loadExistingReservations();
+    };
+</script>
 </body>
 </html>
