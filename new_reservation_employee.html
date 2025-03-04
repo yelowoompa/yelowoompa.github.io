@@ -104,10 +104,15 @@
             const email = document.getElementById('email').value;
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
-            const guests = document.getElementById('guests').value;
+            const guests = parseInt(document.getElementById('guests').value, 10);
 
             if (!username) {
                 alert('Please enter a username.');
+                return false;
+            }
+
+            if (guests > 50) {
+                window.location.href = 'large_reservation_form.html';
                 return false;
             }
 
