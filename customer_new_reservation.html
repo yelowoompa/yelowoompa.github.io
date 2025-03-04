@@ -100,21 +100,30 @@
 
         function validateNewReservation(event) {
             event.preventDefault();
-            if (!loggedInUser) {
-                alert("You must be logged in to create a reservation.");
-                return false;
-            }
-
+            const username = document.getElementById('username').value.trim();
             const company = document.getElementById('company').value;
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
-            const guests = document.getElementById('guests').value;
+            const guests = parseInt(document.getElementById('guests').value, 10);
 
-            const newReservation = { username: loggedInUser, company, name, email, date, time, guests };
+            if (!username) {
+                alert('Please enter a username.');
+                return false;
+            }
+
+            if (guests > 50) {
+                window.location.href = 'large_reservation_form.html';
+                return false;
+            }
+
+            let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+            const newReservation = { username, company, name, email, date, time, guests };
             existingReservations.push(newReservation);
             localStorage.setItem('reservations', JSON.stringify(existingReservations));
+
             loadExistingReservations();
             alert('Reservation successfully created!');
             return true;
