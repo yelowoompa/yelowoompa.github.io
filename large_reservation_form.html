@@ -125,8 +125,10 @@
             return false;
         }
 
+        // Fetch existing reservations
         let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
 
+        // Create new large reservation
         const newLargeReservation = {
             username,
             company,
@@ -137,16 +139,17 @@
             guests,
             roomSize,
             signature,
-            largeReservation: true // ✅ Ensure large reservation flag
+            largeReservation: true // ✅ Ensure this flag is set
         };
 
+        // Save to `reservations` array
         reservations.push(newLargeReservation);
         localStorage.setItem('reservations', JSON.stringify(reservations));
 
-        console.log("Large reservation saved:", newLargeReservation); // Debugging Log
         alert('Large reservation successfully submitted.');
-        window.location.href = 'payment_page.html';
+        window.location.href = 'payment_page.html'; // Redirect to payment
     }
+
 </script>
 </body>
 </html>
