@@ -104,7 +104,8 @@
 <script>
     function submitLargeReservation(event) {
         event.preventDefault();
-        const username = document.getElementById('username').value.trim();
+
+        const username = localStorage.getItem('loggedInUser') || document.getElementById('username').value.trim();
         const company = document.getElementById('company').value;
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
@@ -114,20 +115,24 @@
         const roomSize = document.getElementById('roomSize').value;
         const signature = document.getElementById('signature').value.trim();
 
+        if (!username) {
+            alert("Please log in before making a reservation.");
+            return false;
+        }
+
         if (!signature) {
             alert('You must provide a signature to agree to the terms.');
             return false;
         }
 
-        let largeReservations = JSON.parse(localStorage.getItem('largeReservations')) || [];
+        let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
 
-        const newLargeReservation = { username, company, name, email, date, time, guests, roomSize, signature };
-        largeReservations.push(newLargeReservation);
-        localStorage.setItem('largeReservations', JSON.stringify(largeReservations));
+        const newLargeReservation = { username, company, name, email, date, time, guests, roomSize, signature, largeReservation: true };
+        reservations.push(newLargeReservation);
+        localStorage.setItem('reservations', JSON.stringify(reservations));
 
         alert('Large reservation successfully submitted. Payment must be made upfront.');
-        window.location.href = 'payment_page.html'; // Redirect to a payment page (create this separately)
-        return true;
+        window.location.href = 'payment_page.html'; // Redirect to payment page
     }
 </script>
 </body>
