@@ -89,6 +89,7 @@
 
         function loadReservations() {
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            console.log("Loaded reservations:", reservations); // Debugging Log
             const reservationList = document.getElementById('reservationList');
             reservationList.innerHTML = '';
 
@@ -102,20 +103,21 @@
                 const div = document.createElement('div');
                 div.classList.add('reservation-item');
                 div.innerHTML = `
-            <p><strong>Company:</strong> ${reservation.company || "N/A"}</p>
-            <p><strong>Username:</strong> ${reservation.username || "Not Assigned"}</p>
-            <p><strong>Name:</strong> ${reservation.name}</p>
-            <p><strong>Email:</strong> ${reservation.email}</p>
-            <p><strong>Date:</strong> ${reservation.date}</p>
-            <p><strong>Time:</strong> ${reservation.time}</p>
-            <p><strong>Guests:</strong> ${reservation.guests}</p>
-            <p><strong>Type:</strong> ${reservation.largeReservation ? "Large Reservation" : "Regular Reservation"}</p>
-            <button onclick="editReservation(${index})">Edit</button>
-            <button onclick="deleteReservation(${index})">Delete</button>
+                    <p><strong>Company:</strong> ${reservation.company || "N/A"}</p>
+                    <p><strong>Username:</strong> ${reservation.username || "Not Assigned"}</p>
+                    <p><strong>Name:</strong> ${reservation.name}</p>
+                    <p><strong>Email:</strong> ${reservation.email}</p>
+                    <p><strong>Date:</strong> ${reservation.date}</p>
+                    <p><strong>Time:</strong> ${reservation.time}</p>
+                    <p><strong>Guests:</strong> ${reservation.guests}</p>
+                    <p><strong>Type:</strong> ${reservation.largeReservation ? "Large Reservation" : "Regular Reservation"}</p>
+                    <button onclick="editReservation(${index})">Edit</button>
+                    <button onclick="deleteReservation(${index})">Delete</button>
         `;
                 reservationList.appendChild(div);
             });
         }
+
 
         function editReservation(index) {
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
