@@ -91,7 +91,7 @@
     }
 
     // Find the most recent large reservation
-    let lastReservation = reservations.reverse().find(res => res.largeReservation);
+    let lastReservation = [...reservations].reverse().find(res => res.largeReservation);
 
     if (!lastReservation) {
       alert("No large reservation found.");
@@ -109,6 +109,9 @@
 
     let totalAmount = calculateTotalAmount(lastReservation.guests, lastReservation.roomSize);
     document.getElementById('totalAmount').innerText = `$${totalAmount.toFixed(2)}`;
+
+    // Store the current reservation in sessionStorage to be removed later
+    sessionStorage.setItem('currentLargeReservation', JSON.stringify(lastReservation));
   }
 
   function calculateTotalAmount(guests, roomSize) {
@@ -128,8 +131,20 @@
       return false;
     }
 
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    let currentLargeReservation = JSON.parse(sessionStorage.getItem('currentLargeReservation'));
+
+    if (!currentLargeReservation) {
+      alert("No large reservation to process.");
+      return false;
+    }
+
+    // Remove the processed reservation
+    reservations = reservations.filter(res => res.email !== currentLargeReservation.email || res.date !== currentLargeReservation.date);
+    localStorage.setItem('reservations', JSON.stringify(reservations));
+    sessionStorage.removeItem('currentLargeReservation');
+
     alert("Payment successful! Your reservation is confirmed.");
-    localStorage.removeItem('largeReservations');
     window.location.href = "customerportal.html";
   }
 

@@ -127,12 +127,24 @@
 
         let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
 
-        const newLargeReservation = { username, company, name, email, date, time, guests, roomSize, signature, largeReservation: true };
+        const newLargeReservation = {
+            username,
+            company,
+            name,
+            email,
+            date,
+            time,
+            guests,
+            roomSize,
+            signature,
+            largeReservation: true
+        };
+
         reservations.push(newLargeReservation);
         localStorage.setItem('reservations', JSON.stringify(reservations));
 
-        alert('Large reservation successfully submitted. Payment must be made upfront.');
-        window.location.href = 'payment_page.html'; // Redirect to payment page
+        alert('Large reservation successfully submitted. Proceed to payment.');
+        window.location.href = 'payment_page.html';
     }
 </script>
 </body>
