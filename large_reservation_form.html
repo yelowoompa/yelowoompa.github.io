@@ -137,14 +137,14 @@
             guests,
             roomSize,
             signature,
-            largeReservation: true
+            largeReservation: true // ✅ Ensure large reservation flag
         };
 
         reservations.push(newLargeReservation);
         localStorage.setItem('reservations', JSON.stringify(reservations));
 
-        alert('Large reservation successfully submitted. Proceed to payment.');
-        window.location.href = 'payment_page.html';
+        alert('Large reservation successfully submitted.');
+        window.location.href = 'payment_page.html'; // Redirect to payment
     }
 </script>
 </body>

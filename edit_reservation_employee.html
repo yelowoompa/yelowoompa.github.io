@@ -92,12 +92,17 @@
             const reservationList = document.getElementById('reservationList');
             reservationList.innerHTML = '';
 
+            if (reservations.length === 0) {
+                reservationList.innerHTML = '<p>No reservations found.</p>';
+                return;
+            }
+
             reservations.forEach((reservation, index) => {
-                // Include both regular and large reservations
+                // ✅ Show both normal and large reservations
                 const div = document.createElement('div');
                 div.classList.add('reservation-item');
                 div.innerHTML = `
-            <p><strong>Company:</strong> ${reservation.company}</p>
+            <p><strong>Company:</strong> ${reservation.company || "N/A"}</p>
             <p><strong>Username:</strong> ${reservation.username || "Not Assigned"}</p>
             <p><strong>Name:</strong> ${reservation.name}</p>
             <p><strong>Email:</strong> ${reservation.email}</p>
