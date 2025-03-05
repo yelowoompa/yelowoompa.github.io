@@ -79,7 +79,7 @@
         <input type="time" id="time" name="time" required>
 
         <label for="guests">Number of Guests</label>
-        <input type="number" id="guests" name="guests" min="1" required>
+        <input type="number" id="guests" name="guests" min="1" max="50" placeholder="1-50"required>
 
         <label for="roomSize">Room Size</label>
         <select id="roomSize" name="roomSize" required>
@@ -91,8 +91,8 @@
 
         <button type="submit">Reserve Now</button>
     </form>
+    <button onclick="location.href='large_reservation_form.html'">Large Reservation (>50 guests)</button>
     <button onclick="location.href='customerportal.html'">Back to customer portal</button>
-    <button onclick="location.href='large_reservation_form.html'">Large Reservation >50</button>
     <h2>My Reservations</h2>
     <div class="reservation-list" id="reservationList"></div>
 </div>

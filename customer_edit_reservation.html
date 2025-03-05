@@ -110,8 +110,10 @@
                     <p><strong>Time:</strong> ${reservation.time}</p>
                     <p><strong>Guests:</strong> ${reservation.guests}</p>
                     <p><strong>Type:</strong> ${reservation.largeReservation ? "Large Reservation" : "Regular Reservation"}</p>
-                    <button onclick="editReservation(${index})">Edit</button>
-                    <button onclick="deleteReservation(${index})">Delete</button>
+                    ${reservation.largeReservation ? 
+                    "<p><strong>Large reservations cannot be edited or deleted without staff member assistance</strong></p>" : 
+                    "<button onclick=\"editReservation(${index})\">Edit</button>   " + // For some reason the two buttons are grouped closer together if they're inside a ternary operator together, it probably makes sense to you but not to me. I just added a few spaces for now to keep the asthetic, feel free to replace this with a better method if you have a reason to do so.
+                    "<button onclick=\"deleteReservation(${index})\">Delete</button>"}
         `;
                 reservationList.appendChild(div);
             });
@@ -120,6 +122,7 @@
         function editReservation(index) {
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             const reservation = reservations[index];
+            if (reservation.guests > 50) return;
 
             document.getElementById('editCompany').value = reservation.company;
             document.getElementById('editName').value = reservation.name;
