@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Agreements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f4a742;
+            color: white;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Large Reservation Agreements</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Company</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Guests</th>
+            <th>Room Size</th>
+            <th>Signature</th>
+        </tr>
+        </thead>
+        <tbody id="agreementsTableBody"></tbody>
+    </table>
+    <button onclick="location.href='customerportal.html'">Back to Customer Portal</button>
+</div>
+
+<script>
+    function loadAgreements() {
+        const agreements = JSON.parse(localStorage.getItem('agreements')) || [];
+        const tableBody = document.getElementById('agreementsTableBody');
+        tableBody.innerHTML = '';
+
+        agreements.forEach(agreement => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${agreement.company}</td>
+                <td>${agreement.name}</td>
+                <td>${agreement.email}</td>
+                <td>${agreement.date}</td>
+                <td>${agreement.time}</td>
+                <td>${agreement.guests}</td>
+                <td>${agreement.roomSize}</td>
+                <td>${agreement.signature}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAgreements);
+</script>
+</body>
+</html>
