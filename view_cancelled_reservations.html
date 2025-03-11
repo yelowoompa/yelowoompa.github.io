@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Reservations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    .reservation-list {
+      margin-top: 20px;
+    }
+    .reservation-item {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .print-button {
+      display: block;
+      width: 200px;
+      margin: 20px auto;
+      padding: 10px;
+      text-align: center;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .print-button:hover {
+      background-color: #0056b3;
+    }
+    button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+    @media print {
+      .print-button { display: none; }
+      .container { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Cancelled Reservations</h2>
+  <button onclick="location.href='employeeportal.html'">Back to employee portal</button>
+  <div class="reservation-list" id="reservationList"></div>
+  <button class="print-button" onclick="window.print()">Print Reservations</button>
+</div>
+
+<script>
+  function loadReservations() {
+    const cancelled_reservations = JSON.parse(localStorage.getItem('cancelled_reservations')) || [];
+    const reservationList = document.getElementById('reservationList');
+    reservationList.innerHTML = '';
+
+    if (cancelled_reservations.length === 0) {
+      reservationList.innerHTML = '<p>No reservations found.</p>';
+      return;
+    }
+
+    cancelled_reservations.forEach(reservation => {
+      const div = document.createElement('div');
+      div.classList.add('reservation-item');
+      div.innerHTML = `
+            <p><strong>Company:</strong> ${reservation.company || "N/A"}</p>
+            <p><strong>Name:</strong> ${reservation.name}</p>
+            <p><strong>Email:</strong> ${reservation.email}</p>
+            <p><strong>Date:</strong> ${reservation.date}</p>
+            <p><strong>Time:</strong> ${reservation.time}</p>
+            <p><strong>Guests:</strong> ${reservation.guests}</p>
+            <p><strong>Type:</strong> ${reservation.largeReservation ? "Large Reservation" : "Regular Reservation"}</p>
+        `;
+      reservationList.appendChild(div);
+    });
+  }
+
+  window.onload = loadReservations;
+</script>
+</body>
+</html>
