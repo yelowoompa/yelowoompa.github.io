@@ -112,8 +112,8 @@
                     <p><strong>Type:</strong> ${reservation.largeReservation ? "Large Reservation" : "Regular Reservation"}</p>
                     ${reservation.largeReservation ? 
                     "<p><strong>Large reservations cannot be edited or deleted without staff member assistance</strong></p>" : 
-                    "<button onclick=\"editReservation(${index})\">Edit</button>   " + // For some reason the two buttons are grouped closer together if they're inside a ternary operator together, it probably makes sense to you but not to me. I just added a few spaces for now to keep the asthetic, feel free to replace this with a better method if you have a reason to do so.
-                    "<button onclick=\"deleteReservation(${index})\">Delete</button>"}
+                    `<button onclick="editReservation(${index})">Edit</button>   ` + // For some reason the two buttons are grouped closer together if they're inside a ternary operator together, it probably makes sense to you but not to me. I just added a few spaces for now to keep the asthetic, feel free to replace this with a better method if you have a reason to do so.
+                    `<button onclick="deleteReservation(${index})">Delete</button>`}
         `;
                 reservationList.appendChild(div);
             });
@@ -156,8 +156,11 @@
 
         function deleteReservation(index) {
             let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            let cancelled_reservations = JSON.parse(localStorage.getItem('cancelled_reservations')) || [];
+            cancelled_reservations.push(reservations[index]);
             reservations.splice(index, 1);
             localStorage.setItem('reservations', JSON.stringify(reservations));
+            localStorage.setItem('cancelled_reservations', JSON.stringify(cancelled_reservations));
             loadReservations();
         }
 

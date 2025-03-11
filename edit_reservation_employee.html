@@ -157,8 +157,11 @@
 
         function deleteReservation(index) {
             let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+            let cancelled_reservations = JSON.parse(localStorage.getItem('cancelled_reservations')) || [];
+            cancelled_reservations.push(reservations[index]);
             reservations.splice(index, 1);
             localStorage.setItem('reservations', JSON.stringify(reservations));
+            localStorage.setItem('cancelled_reservations', JSON.stringify(cancelled_reservations));
             loadReservations();
         }
 
