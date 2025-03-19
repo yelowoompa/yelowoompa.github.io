@@ -88,21 +88,42 @@
         </select>
 
         <div class="agreement">
-            <p><strong>Agreement:</strong> By signing below, you confirm that your client has acknowledged:</p>
+            <p><strong>Agreement:</strong> By signing below, you acknowledge that:</p>
             <ul>
                 <li>All large reservations are final and cannot be canceled.</li>
                 <li>Payment must be made upfront before confirmation.</li>
             </ul>
             <label for="signature">Signature</label>
-            <input type="text" id="signature" name="signature" placeholder="Enter your client's full name as a signature" required>
+            <input type="text" id="signature" name="signature" placeholder="Enter your full name as a signature" required>
         </div>
         <button type="submit">Submit Large Reservation</button>
     </form>
-    <button onclick="location.href='new_reservation_employee.html'">Standard Reservation (≤50 guests)</button>
-    <button onclick="location.href='employeeportal.html'">Back to employee portal</button>
+    <button onclick="location.href='new_reservation.html'">Standard Reservation (≤50 guests)</button>
+    <button onclick="location.href='customerportal.html'" id="backButton">Back to customer portal</button>
 </div>
 
 <script>
+    function setupPage()
+    {
+        let loggedInType = localStorage.getItem('loggedInType');
+        loggedInUser = localStorage.getItem('loggedInUser');
+
+        if (loggedInType === "employee")
+        {
+            document.getElementById('backButton').outerHTML = "<button onclick=\"location.href='employeeportal.html'\" id=\"backButton\">Back to employee portal</button>";
+        } else {
+            document.getElementById('username').outerHTML = "<input type=\"text\" id=\"username\" name=\"username\" disabled>"
+            document.getElementById('username').value = loggedInUser;
+        }
+
+        if (!loggedInUser) {
+            alert("Please log in to view your reservations.");
+            window.location.href = "index.html";
+            return;
+        }
+
+    }
+
     function submitLargeReservation(event) {
         event.preventDefault();
 
@@ -126,21 +147,9 @@
             return false;
         }
 
-        // Fetch existing reservations or create a new array
-        let reservations = [];
-        if (localStorage.getItem('reservations')) {
-            try {
-                reservations = JSON.parse(localStorage.getItem('reservations'));
-                if (!Array.isArray(reservations)) {
-                    reservations = []; // If it's not an array, reset it
-                }
-            } catch (error) {
-                console.error("Error parsing reservations:", error);
-                reservations = []; // Reset in case of JSON corruption
-            }
-        }
+        let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        let agreements = JSON.parse(localStorage.getItem('agreements')) || [];
 
-        // Create new large reservation object
         const newLargeReservation = {
             username,
             company,
@@ -154,20 +163,17 @@
             largeReservation: true
         };
 
-        // Debugging: Log before saving
-        console.log("Saving Large Reservation:", newLargeReservation);
-
-        // Push to array and save to localStorage
         reservations.push(newLargeReservation);
-        localStorage.setItem('reservations', JSON.stringify(reservations));
+        agreements.push(newLargeReservation);
 
-        // Debugging: Check if it was stored correctly
-        console.log("Updated Reservations in localStorage:", JSON.parse(localStorage.getItem('reservations')));
+        localStorage.setItem('reservations', JSON.stringify(reservations));
+        localStorage.setItem('agreements', JSON.stringify(agreements));
 
         alert('Large reservation successfully submitted.');
-        window.location.href = 'payment_page.html'; // Redirect to payment
+        window.location.href = 'payment_page.html';
     }
 
+    window.onload = setupPage;
 </script>
 </body>
 </html>

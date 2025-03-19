@@ -61,7 +61,7 @@
     <h2>New Reservation</h2>
     <form id="reservationForm" onsubmit="return validateNewReservation(event)">
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" disabled>
+        <input type="text" id="username" name="username" required>
 
         <label for="company">Company</label>
         <input type="text" id="company" name="company">
@@ -91,8 +91,8 @@
 
         <button type="submit">Reserve Now</button>
     </form>
-    <button onclick="location.href='large_reservation_form.html'">Large Reservation (>50 guests)</button>
-    <button onclick="location.href='customerportal.html'">Back to customer portal</button>
+    <button onclick="location.href='large_reservation.html'">Large Reservation (>50 guests)</button>
+    <button onclick="location.href='customerportal.html'" id="backButton">Back to customer portal</button>
     <h2>My Reservations</h2>
     <div class="reservation-list" id="reservationList"></div>
 </div>
@@ -100,6 +100,29 @@
 <script>
     let existingReservations = JSON.parse(localStorage.getItem('reservations')) || [];
     let loggedInUser = localStorage.getItem('loggedInUser');
+
+    function setupPage()
+    {
+        let loggedInType = localStorage.getItem('loggedInType');
+        loggedInUser = localStorage.getItem('loggedInUser');
+
+        if (loggedInType === "employee")
+        {
+            document.getElementById('backButton').outerHTML = "<button onclick=\"location.href='employeeportal.html'\" id=\"backButton\">Back to employee portal</button>";
+        } else {
+            document.getElementById('username').outerHTML = "<input type=\"text\" id=\"username\" name=\"username\" disabled>"
+            document.getElementById('username').value = loggedInUser;
+        }
+
+        if (!loggedInUser) {
+            alert("Please log in to view your reservations.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        loadExistingReservations();
+
+    }
 
     function validateNewReservation(event) {
         event.preventDefault();
@@ -119,7 +142,7 @@
         }
 
         if (guests > 50) {
-            window.location.href = 'large_reservation_form.html';
+            window.location.href = 'large_reservation.html';
             return false;
         }
 
@@ -134,7 +157,7 @@
     }
 
     function addReservationToList(reservation) {
-        if (reservation.username !== loggedInUser) return;
+        if (reservation.username !== loggedInUser && localStorage.getItem('loggedInType') !== "employee") return;
 
         const reservationList = document.getElementById('reservationList');
         const div = document.createElement('div');
@@ -156,16 +179,7 @@
         existingReservations.forEach(addReservationToList);
     }
 
-    window.onload = function() {
-        loggedInUser = localStorage.getItem('loggedInUser');
-        if (!loggedInUser) {
-            alert("Please log in to view your reservations.");
-            window.location.href = "customerlogin.html";
-            return;
-        }
-        document.getElementById('username').value = loggedInUser;
-        loadExistingReservations();
-    };
+    window.onload = setupPage;
 </script>
 </body>
 </html>
