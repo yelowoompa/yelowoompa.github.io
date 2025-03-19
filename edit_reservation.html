@@ -49,8 +49,9 @@
 </head>
 <body>
     <div class="container">
-        <h2>Edit My Reservations</h2>
-        <button onclick="location.href='customerportal.html'">Back to customer portal</button>
+        <h2>Edit Reservations</h2>
+        <button onclick="location.href='customerportal.html'" id="backButton">Back to customer portal</button>
+        
         <div class="reservation-list" id="reservationList"></div>
 
         <div class="edit-form" id="editForm">
@@ -84,11 +85,20 @@
         let loggedInUser = localStorage.getItem('loggedInUser');
 
         function loadReservations() {
+
+            let loggedInType = localStorage.getItem('loggedInType');
+
+
+            if (loggedInType === "employee")
+            {
+                document.getElementById('backButton').outerHTML = "<button onclick=\"location.href='employeeportal.html'\" id=\"backButton\">Back to employee portal</button>";
+            }
+
             let loggedInUser = localStorage.getItem('loggedInUser');
 
             if (!loggedInUser) {
                 alert("Please log in to manage your reservations.");
-                window.location.href = "customerlogin.html";
+                window.location.href = "index.html";
                 return;
             }
 
@@ -98,10 +108,15 @@
             reservationList.innerHTML = '';
 
             reservations.forEach((reservation, index) => {
-                if (reservation.username !== loggedInUser) return;
+                if (loggedInType !== "employee" && reservation.username !== loggedInUser) return;
 
                 const div = document.createElement('div');
                 div.classList.add('reservation-item');
+
+                ending = loggedInType !== "employee" && reservation.largeReservation ? 
+                    "<p><strong>Large reservations cannot be edited or deleted without staff member assistance</strong></p>" : 
+                    `<button onclick="editReservation(${index})">Edit</button>   <button onclick="deleteReservation(${index})">Delete</button>`
+
                 div.innerHTML = `
                     <p><strong>Company:</strong> ${reservation.company}</p>
                     <p><strong>Name:</strong> ${reservation.name}</p>
@@ -110,11 +125,7 @@
                     <p><strong>Time:</strong> ${reservation.time}</p>
                     <p><strong>Guests:</strong> ${reservation.guests}</p>
                     <p><strong>Type:</strong> ${reservation.largeReservation ? "Large Reservation" : "Regular Reservation"}</p>
-                    ${reservation.largeReservation ? 
-                    "<p><strong>Large reservations cannot be edited or deleted without staff member assistance</strong></p>" : 
-                    `<button onclick="editReservation(${index})">Edit</button>   ` + // For some reason the two buttons are grouped closer together if they're inside a ternary operator together, it probably makes sense to you but not to me. I just added a few spaces for now to keep the asthetic, feel free to replace this with a better method if you have a reason to do so.
-                    `<button onclick="deleteReservation(${index})">Delete</button>`}
-        `;
+                ` + ending;
                 reservationList.appendChild(div);
             });
         }
@@ -122,7 +133,6 @@
         function editReservation(index) {
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             const reservation = reservations[index];
-            if (reservation.guests > 50) return;
 
             document.getElementById('editCompany').value = reservation.company;
             document.getElementById('editName').value = reservation.name;

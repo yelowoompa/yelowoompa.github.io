@@ -152,7 +152,7 @@
     sessionStorage.removeItem('currentLargeReservation'); // Clean up session storage
 
     alert("Payment successful! Your reservation is now marked as paid.");
-    let destination = localStorage.getItem('logged_in_type') || "customer";
+    let destination = localStorage.getItem('loggedInType') || "customer";
     window.location.href = (destination == "employee") ? "employeeportal.html" : "customerportal.html"; // Redirect back to customer portal
   }
 
