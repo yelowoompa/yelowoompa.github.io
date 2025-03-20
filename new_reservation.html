@@ -122,11 +122,11 @@
 
         let currentDate = new Date();
         let minAvailableDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 5);
-        let minDateFormatted = `${minAvailableDate.getFullYear()}-${minAvailableDate.getMonth() < 10 ? '0' : ''}${minAvailableDate.getMonth()}-${minAvailableDate.getDay() < 10 ? "0" : ""}${minAvailableDate.getDay()}`;
+        let minDateFormatted = `${minAvailableDate.getFullYear()}-${minAvailableDate.getMonth() < 9 ? '0' : ''}${minAvailableDate.getMonth()}-${minAvailableDate.getDate() < 9 ? "0" : ""}${minAvailableDate.getDate()}`;
         let maxAvailableDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 365);
-        let maxDateFormatted = `${maxAvailableDate.getFullYear()}-${maxAvailableDate.getMonth() < 10 ? '0' : ''}${maxAvailableDate.getMonth()}-${maxAvailableDate.getDay() < 10 ? "0" : ""}${maxAvailableDate.getDay()}`;
+        let maxDateFormatted = `${maxAvailableDate.getFullYear()}-${maxAvailableDate.getMonth() < 9 ? '0' : ''}${maxAvailableDate.getMonth()}-${maxAvailableDate.getDate() < 9 ? "0" : ""}${maxAvailableDate.getDate()}`;
         document.getElementById('date').outerHTML = `<input type="date" id="date" name="date" min="${minDateFormatted}" max="${maxDateFormatted}" required>`;
-        
+
         loadExistingReservations();
 
     }

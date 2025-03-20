@@ -83,16 +83,27 @@
     <script>
         let currentEditIndex = null;
         let loggedInUser = localStorage.getItem('loggedInUser');
+        let loggedInType = localStorage.getItem('loggedInType');
 
-        function loadReservations() {
-
-            let loggedInType = localStorage.getItem('loggedInType');
-
+        function setUpPage()
+        {
             if (loggedInType === "employee")
             {
                 document.getElementById('backButton').outerHTML = "<button onclick=\"location.href='employeeportal.html'\" id=\"backButton\">Back to employee portal</button>";
             }
 
+            let currentDate = new Date();
+            let minAvailableDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 5);
+            let minDateFormatted = `${minAvailableDate.getFullYear()}-${minAvailableDate.getMonth() < 9 ? '0' : ''}${minAvailableDate.getMonth()+1}-${minAvailableDate.getDate() < 9 ? "0" : ""}${minAvailableDate.getDate()+1}`;
+            let maxAvailableDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 365);
+            let maxDateFormatted = `${maxAvailableDate.getFullYear()}-${maxAvailableDate.getMonth() < 9 ? '0' : ''}${maxAvailableDate.getMonth()+1}-${maxAvailableDate.getDate() < 9 ? "0" : ""}${maxAvailableDate.getDate()+1}`;
+            document.getElementById('editDate').outerHTML = `<input type="date" id="editDate" min="${minDateFormatted}" max="${maxDateFormatted}" required>`;
+
+            loadReservations();
+        }
+
+
+        function loadReservations() {
             let loggedInUser = localStorage.getItem('loggedInUser');
 
             if (!loggedInUser) {
@@ -150,7 +161,7 @@
 
             reservations[currentEditIndex] = {
                 username: loggedInUser,
-                company: document.getElementById('editComapny').value,
+                company: document.getElementById('editCompany').value,
                 name: document.getElementById('editName').value,
                 email: document.getElementById('editEmail').value,
                 date: document.getElementById('editDate').value,
@@ -170,6 +181,7 @@
             reservations.splice(index, 1);
             localStorage.setItem('reservations', JSON.stringify(reservations));
             localStorage.setItem('cancelled_reservations', JSON.stringify(cancelled_reservations));
+            if (index == currentEditIndex) cancelEdit();
             loadReservations();
         }
 
@@ -177,7 +189,7 @@
             document.getElementById('editForm').style.display = 'none';
         }
 
-        window.onload = loadReservations;
+        window.onload = setUpPage;
     </script>
 </body>
 </html>
