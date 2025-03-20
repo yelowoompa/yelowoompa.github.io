@@ -93,6 +93,7 @@
             let allUsers = { ...defaultUsers, ...storedUsers };
 
             if (allUsers[username] && allUsers[username] === password) {
+                localStorage.setItem('loggedInType', "customer");
                 localStorage.setItem("loggedInUser", username);
                 window.location.href = "customerportal.html";
             } else {
@@ -133,7 +134,6 @@
             document.getElementById("loginContainer").classList.remove("hidden");
         }
 
-    window.onload = localStorage.setItem('logged_in_type', "customer");
     </script>
 </body>
 </html>
