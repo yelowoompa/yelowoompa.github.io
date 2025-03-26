@@ -73,12 +73,12 @@
         };
 
         if (validUsers[username] && validUsers[username] === password) {
+            localStorage.setItem('loggedInType', "employee");
             window.location.href = "employeeportal.html";
         } else {
             alert("Invalid username or password");
         }
     }
-    window.onload = localStorage.setItem('logged_in_type', "employee");
 </script>
 </body>
 </html>
