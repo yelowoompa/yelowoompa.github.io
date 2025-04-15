@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Rooms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px #ccc;
+        }
+        label, input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Check Available Rooms</h2>
+    <label for="checkDate">Select Date</label>
+    <input type="date" id="checkDate" required>
+    <button onclick="checkAvailability()">Check</button>
+    <div id="resultTable"></div>
+    <button onclick="location.href='employeeportal.html'" style="margin-top: 20px;">Back to Employee Portal</button>
+</div>
+
+<script>
+    const roomInventory = {
+        "Small": 5,
+        "Medium": 4,
+        "Large": 3,
+        "Extra Large": 2
+    };
+
+    const timeSlots = ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"];
+
+    function checkAvailability() {
+        const selectedDate = document.getElementById('checkDate').value;
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        const container = document.getElementById('resultTable');
+        container.innerHTML = '';
+
+        // Create a table
+        let html = `<table><tr><th>Time</th>`;
+        for (let roomType in roomInventory) {
+            html += `<th>${roomType}</th>`;
+        }
+        html += `</tr>`;
+
+        timeSlots.forEach(slot => {
+            html += `<tr><td>${slot}</td>`;
+            for (let type in roomInventory) {
+                const count = reservations.filter(r =>
+                    r.date === selectedDate &&
+                    r.time === slot &&
+                    r.roomSize === type
+                ).length;
+                const available = roomInventory[type] - count;
+                html += `<td>${available > 0 ? available + " available" : "Fully booked"}</td>`;
+            }
+            html += `</tr>`;
+        });
+
+        html += `</table>`;
+        container.innerHTML = html;
+    }
+</script>
+</body>
+</html>
