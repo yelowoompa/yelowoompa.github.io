@@ -134,7 +134,7 @@
     function validateNewReservation(event) {
         event.preventDefault();
 
-        const username = loggedInUser;
+        const username = loggedInUser || document.getElementById('username').value;
         const company = document.getElementById('company').value;
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
