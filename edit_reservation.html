@@ -159,6 +159,15 @@
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             if (currentEditIndex === null) return;
 
+            const newGuestCount = parseInt(document.getElementById('editGuests').value);
+            const originalReservation = reservations[currentEditIndex];
+
+            // Prevent upgrading small reservations to large
+            if (!originalReservation.largeReservation && newGuestCount > 50) {
+                alert("Small reservations cannot be changed to more than 50 guests. Please contact staff.");
+                return;
+            }
+
             reservations[currentEditIndex] = {
                 username: loggedInUser,
                 company: document.getElementById('editCompany').value,
@@ -166,7 +175,8 @@
                 email: document.getElementById('editEmail').value,
                 date: document.getElementById('editDate').value,
                 time: document.getElementById('editTime').value,
-                guests: document.getElementById('editGuests').value,
+                guests: newGuestCount,
+                largeReservation: originalReservation.largeReservation // retain original type
             };
 
             localStorage.setItem('reservations', JSON.stringify(reservations));

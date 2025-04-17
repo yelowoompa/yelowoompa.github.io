@@ -42,6 +42,15 @@
         }
     </style>
 </head>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("loggedInType");
+        window.location.href = "employeelogin.html";
+    }
+</script>
+
 <body>
 <header>Welcome to the Employee Portal</header>
     <div class="buttons">
@@ -51,6 +60,7 @@
         <button onclick="location.href='view_cancelled_reservations.html'">View Cancelled Reservations</button>
         <button onclick="location.href='view_agreements.html'">View Agreements</button>
         <button onclick="location.href='available_rooms_employee.html'">View Rooms</button>
+        <button onclick="logout()">Logout</button>
     </div>
 </body>
 </html>

@@ -42,12 +42,22 @@
         }
     </style>
 </head>
+
+<script>
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("loggedInType");
+        window.location.href = "customerlogin.html";
+    }
+</script>
+
 <body>
     <header>Welcome to the Customer Portal</header>
     <div class="buttons">
         <button onclick="location.href='edit_reservation.html'">Edit an Existing Reservation</button>
         <button onclick="location.href='new_reservation.html'">Create a New Reservation</button>
         <button onclick="location.href='available_rooms.html'">Check Available Rooms</button>
+        <button onclick="logout()">Logout</button>
     </div>
 </body>
 </html>

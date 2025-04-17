@@ -119,21 +119,12 @@
 
             users[newUsername] = newPassword;
             localStorage.setItem("users", JSON.stringify(users));
-            alert("User created successfully! You can now log in.");
 
-            showLogin();
+            // Auto-login after successful signup
+            localStorage.setItem('loggedInType', "customer");
+            localStorage.setItem("loggedInUser", newUsername);
+            window.location.href = "customerportal.html";
         }
-
-        function showSignup() {
-            document.getElementById("loginContainer").classList.add("hidden");
-            document.getElementById("signupContainer").classList.remove("hidden");
-        }
-
-        function showLogin() {
-            document.getElementById("signupContainer").classList.add("hidden");
-            document.getElementById("loginContainer").classList.remove("hidden");
-        }
-
     </script>
 </body>
 </html>
