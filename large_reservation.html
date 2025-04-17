@@ -59,6 +59,9 @@
 <body>
 <div class="container">
     <h2>Large Reservation Agreement</h2>
+    <p style="color: #cc0000; font-weight: bold; text-align: center;">
+        Reservations can only be made from 11:00–20:00, and must be made on the hour.
+    </p>
     <form id="largeReservationForm" onsubmit="return submitLargeReservation(event)">
         <label for="company">Company</label>
         <input type="text" id="company" name="company" required>
@@ -76,7 +79,7 @@
         <input type="date" id="date" name="date" required>
 
         <label for="time">Time</label>
-        <input type="time" id="time" name="time" required>
+        <input type="time" id="time" name="time" min="11:00" max="20:00" step="3600" required>
 
         <label for="guests">Number of Guests</label>
         <input type="number" id="guests" name="guests" min="51" placeholder="51+" required>
