@@ -106,7 +106,7 @@
         function loadReservations() {
             let loggedInUser = localStorage.getItem('loggedInUser');
 
-            if (!loggedInUser) {
+            if (!loggedInUser && loggedInType !== "employee") {
                 alert("Please log in to manage your reservations.");
                 window.location.href = "index.html";
                 return;
