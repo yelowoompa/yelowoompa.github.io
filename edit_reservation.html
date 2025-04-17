@@ -155,6 +155,26 @@
             currentEditIndex = index;
         }
 
+        function isRoomAvailable(date, time, roomSize, ignoreIndex = null) {
+            const roomInventory = {
+                "Small": 5,
+                "Medium": 4,
+                "Large": 3,
+                "Extra Large": 1
+            };
+
+            const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+            const count = reservations.filter((r, i) =>
+                i !== ignoreIndex &&
+                r.date === date &&
+                r.time === time &&
+                r.roomSize === roomSize
+            ).length;
+
+            return count < roomInventory[roomSize];
+        }
+
         function saveChanges() {
             const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
             if (currentEditIndex === null) return;
@@ -165,6 +185,16 @@
             // Prevent upgrading small reservations to large
             if (!originalReservation.largeReservation && newGuestCount > 50) {
                 alert("Small reservations cannot be changed to more than 50 guests. Please contact staff.");
+                return;
+            }
+
+            if (!isRoomAvailable(
+                document.getElementById('editDate').value,
+                document.getElementById('editTime').value,
+                originalReservation.roomSize,
+                currentEditIndex
+            )) {
+                alert("No available rooms of this type at the selected date and time.");
                 return;
             }
 

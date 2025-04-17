@@ -130,6 +130,25 @@
         document.getElementById('date').outerHTML = `<input type="date" id="date" name="date" min="${minDateFormatted}" max="${maxDateFormatted}" required>`;
     }
 
+    function isRoomAvailable(date, time, roomSize) {
+        const roomInventory = {
+            "Small": 5,
+            "Medium": 4,
+            "Large": 3,
+            "Extra Large": 1
+        };
+
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+        const count = reservations.filter(r =>
+            r.date === date &&
+            r.time === time &&
+            r.roomSize === roomSize
+        ).length;
+
+        return count < roomInventory[roomSize];
+    }
+
     function submitLargeReservation(event) {
         event.preventDefault();
 
@@ -141,7 +160,12 @@
         const time = document.getElementById('time').value;
         const guests = parseInt(document.getElementById('guests').value, 10);
         const roomSize = document.getElementById('roomSize').value;
-        const signature = document.getElementById('signature').value.trim();
+        const signature = document.getElementById('signature').value.trim()
+
+        if (!isRoomAvailable(date, time, roomSize)) {
+            alert(`No available ${roomSize} rooms at ${time} on ${date}.`);
+            return false;
+        }
 
         if (!username) {
             alert("Please log in before making a reservation.");

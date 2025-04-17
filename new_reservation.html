@@ -131,6 +131,25 @@
 
     }
 
+    function isRoomAvailable(date, time, roomSize) {
+        const roomInventory = {
+            "Small": 5,
+            "Medium": 4,
+            "Large": 3,
+            "Extra Large": 1
+        };
+
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+        const count = reservations.filter(r =>
+            r.date === date &&
+            r.time === time &&
+            r.roomSize === roomSize
+        ).length;
+
+        return count < roomInventory[roomSize];
+    }
+
     function validateNewReservation(event) {
         event.preventDefault();
 
@@ -150,6 +169,11 @@
 
         if (guests > 50) {
             window.location.href = 'large_reservation.html';
+            return false;
+        }
+
+        if (!isRoomAvailable(date, time, roomSize)) {
+            alert(`No available ${roomSize} rooms at ${time} on ${date}. Please choose another time or room.`);
             return false;
         }
 
