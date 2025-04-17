@@ -85,6 +85,14 @@
             <label for="editGuests">Guests</label>
             <input type="number" id="editGuests" min="1" required>
 
+            <label for="editRoomSize">Room Size</label>
+            <select id="editRoomSize" required>
+                <option value="Small">Small Room</option>
+                <option value="Medium">Medium Room</option>
+                <option value="Large">Large Room</option>
+                <option value="Extra Large">Extra Large Room</option>
+            </select>
+
             <button onclick="saveChanges()">Save Changes</button>
             <button onclick="cancelEdit()">Cancel</button>
         </div>
@@ -161,6 +169,7 @@
             document.getElementById('editDate').value = reservation.date;
             document.getElementById('editTime').value = reservation.time || "11:00";
             document.getElementById('editGuests').value = reservation.guests;
+            document.getElementById('editRoomSize').value = reservation.roomSize || "Small";
 
             document.getElementById('editForm').style.display = 'block';
             currentEditIndex = index;
@@ -214,7 +223,7 @@
             if (!isRoomAvailable(
                 document.getElementById('editDate').value,
                 newTime,
-                originalReservation.roomSize,
+                newRoomSize,
                 currentEditIndex
             ))
             {
@@ -222,15 +231,18 @@
                 return;
             }
 
+            const newRoomSize = document.getElementById('editRoomSize').value;
+
             reservations[currentEditIndex] = {
                 username: loggedInUser,
                 company: document.getElementById('editCompany').value,
                 name: document.getElementById('editName').value,
                 email: document.getElementById('editEmail').value,
                 date: document.getElementById('editDate').value,
-                time: document.getElementById('editTime').value,
+                time: newTime,
                 guests: newGuestCount,
-                largeReservation: originalReservation.largeReservation // retain original type
+                roomSize: newRoomSize,
+                largeReservation: originalReservation.largeReservation
             };
 
             localStorage.setItem('reservations', JSON.stringify(reservations));
