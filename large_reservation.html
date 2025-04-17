@@ -130,7 +130,7 @@
             document.getElementById('username').value = loggedInUser;
         }
 
-        if (!loggedInUser) {
+        if (!loggedInUser && localStorage.getItem("loggedInType") !== "employee") {
             alert("Please log in to view your reservations.");
             window.location.href = "index.html";
             return;
