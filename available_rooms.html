@@ -58,6 +58,19 @@
 </div>
 
 <script>
+    window.onload = function() {
+        const dateInput = document.getElementById("date");
+        const currentDate = new Date();
+
+        const minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 5);
+        const maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 365);
+
+        const format = d => `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+
+        dateInput.min = format(minDate);
+        dateInput.max = format(maxDate);
+    };
+
     const roomInventory = {
         "Small": 5,
         "Medium": 4,
