@@ -201,8 +201,8 @@
 
             const newGuestCount = parseInt(document.getElementById('editGuests').value);
             const originalReservation = reservations[currentEditIndex];
-
             const newTime = document.getElementById('editTime').value;
+            const newRoomSize = document.getElementById('editRoomSize').value;
 
             const allowedTimes = [
                 "11:00", "12:00", "13:00", "14:00",
@@ -214,7 +214,6 @@
                 return;
             }
 
-            // Prevent upgrading small reservations to large
             if (!originalReservation.largeReservation && newGuestCount > 50) {
                 alert("Small reservations cannot be changed to more than 50 guests. Please contact staff.");
                 return;
@@ -225,13 +224,10 @@
                 newTime,
                 newRoomSize,
                 currentEditIndex
-            ))
-            {
+            )) {
                 alert("No available rooms of this type at the selected date and time.");
                 return;
             }
-
-            const newRoomSize = document.getElementById('editRoomSize').value;
 
             reservations[currentEditIndex] = {
                 username: loggedInUser,
