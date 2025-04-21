@@ -139,18 +139,28 @@
     </script>
 
     <script>
-        // Focus on username field on load
+        // Focus correct input field on load
         window.onload = function() {
-            document.getElementById("loginUsername").focus();
-        };
-
-        // Trigger login on Enter
-        document.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                validateLogin();
+            if (!document.getElementById("loginContainer").classList.contains("hidden")) {
+                document.getElementById("loginUsername").focus();
+            } else {
+                document.getElementById("signupUsername").focus();
             }
-        });
+
+            // Attach Enter key behavior *only* to inputs
+            document.querySelectorAll("input").forEach(input => {
+                input.addEventListener("keypress", function(event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        if (!document.getElementById("loginContainer").classList.contains("hidden")) {
+                            document.querySelector("#loginContainer button[onclick='validateLogin()']").click();
+                        } else {
+                            document.querySelector("#signupContainer button[onclick='createUser()']").click();
+                        }
+                    }
+                });
+            });
+        };
     </script>
 </body>
 </html>
