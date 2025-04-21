@@ -81,29 +81,29 @@
     }
 </script>
 
-<script>
-    // Focus appropriate field on load
+<<script>
+    // Focus correct input field on load
     window.onload = function() {
         if (!document.getElementById("loginContainer").classList.contains("hidden")) {
             document.getElementById("loginUsername").focus();
         } else {
             document.getElementById("signupUsername").focus();
         }
+
+        // Attach Enter key behavior *only* to inputs
+        document.querySelectorAll("input").forEach(input => {
+            input.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    if (!document.getElementById("loginContainer").classList.contains("hidden")) {
+                        document.querySelector("#loginContainer button[onclick='validateLogin()']").click();
+                    } else {
+                        document.querySelector("#signupContainer button[onclick='createUser()']").click();
+                    }
+                }
+            });
+        });
     };
-
-    // Trigger login or signup based on focused field
-    document.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            const activeElement = document.activeElement.id;
-
-            if (activeElement === "loginUsername" || activeElement === "loginPassword") {
-                validateLogin();
-            } else if (activeElement === "signupUsername" || activeElement === "signupPassword") {
-                createUser();
-            }
-        }
-    });
 </script>
 </body>
 </html>
