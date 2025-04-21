@@ -5,27 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Portal</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        body {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
+            text-align: center;
         }
         header {
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-top: 40px;
         }
         .buttons {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 40px;
         }
         button {
             padding: 10px 20px;
@@ -41,13 +45,11 @@
             background-color: #0056b3;
         }
         .footer-box {
-            margin-top: 40px;
-            padding: 15px 20px;
             background-color: #ffffff;
             border-top: 1px solid #ccc;
+            padding: 15px 20px;
             font-size: 14px;
             color: #333;
-            text-align: center;
             width: 100%;
         }
     </style>
@@ -62,12 +64,14 @@
 </script>
 
 <body>
-<header>Welcome to the Customer Portal</header>
-<div class="buttons">
-    <button onclick="location.href='edit_reservation.html'">Edit an Existing Reservation</button>
-    <button onclick="location.href='new_reservation.html'">Create a New Reservation</button>
-    <button onclick="location.href='available_rooms.html'">Check Available Rooms</button>
-    <button onclick="logout()">Logout</button>
+<div>
+    <header>Welcome to the Customer Portal</header>
+    <div class="buttons">
+        <button onclick="location.href='edit_reservation.html'">Edit an Existing Reservation</button>
+        <button onclick="location.href='new_reservation.html'">Create a New Reservation</button>
+        <button onclick="location.href='available_rooms.html'">Check Available Rooms</button>
+        <button onclick="logout()">Logout</button>
+    </div>
 </div>
 
 <div class="footer-box">
