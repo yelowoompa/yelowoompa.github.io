@@ -82,24 +82,24 @@
 </script>
 
 <script>
-    // Focus on login or signup username field depending on visible container
+    // Focus appropriate field on load
     window.onload = function() {
-        const loginContainer = document.getElementById("loginContainer");
-        if (!loginContainer.classList.contains("hidden")) {
+        if (!document.getElementById("loginContainer").classList.contains("hidden")) {
             document.getElementById("loginUsername").focus();
         } else {
             document.getElementById("signupUsername").focus();
         }
     };
 
-    // Trigger appropriate action on Enter
+    // Trigger login or signup based on focused field
     document.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
             event.preventDefault();
-            const loginVisible = !document.getElementById("loginContainer").classList.contains("hidden");
-            if (loginVisible) {
+            const activeElement = document.activeElement.id;
+
+            if (activeElement === "loginUsername" || activeElement === "loginPassword") {
                 validateLogin();
-            } else {
+            } else if (activeElement === "signupUsername" || activeElement === "signupPassword") {
                 createUser();
             }
         }
