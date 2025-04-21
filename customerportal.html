@@ -40,6 +40,16 @@
         button:hover {
             background-color: #0056b3;
         }
+        .footer-box {
+            margin-top: 40px;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-top: 1px solid #ccc;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -52,12 +62,17 @@
 </script>
 
 <body>
-    <header>Welcome to the Customer Portal</header>
-    <div class="buttons">
-        <button onclick="location.href='edit_reservation.html'">Edit an Existing Reservation</button>
-        <button onclick="location.href='new_reservation.html'">Create a New Reservation</button>
-        <button onclick="location.href='available_rooms.html'">Check Available Rooms</button>
-        <button onclick="logout()">Logout</button>
-    </div>
+<header>Welcome to the Customer Portal</header>
+<div class="buttons">
+    <button onclick="location.href='edit_reservation.html'">Edit an Existing Reservation</button>
+    <button onclick="location.href='new_reservation.html'">Create a New Reservation</button>
+    <button onclick="location.href='available_rooms.html'">Check Available Rooms</button>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<div class="footer-box">
+    For additional assistance or for general inquiry email: <strong>citydomeconventioncenter@gmail.com</strong><br>
+    For more immediate assistance call: <strong>citydome99</strong>
+</div>
 </body>
 </html>
